@@ -78,8 +78,8 @@ namespace LeanplumSDK
             internal const string VARS_FROM_CODE = "varsFromCode";
             internal const string USER_INFO = "userInfo";
             internal const string URL = "url";
-            internal const string VARIANTS = "variants";
             internal const string VARS = "vars";
+            internal const string VARIANTS = "variants";
         }
 
         public class Kinds

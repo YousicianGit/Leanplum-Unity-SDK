@@ -289,14 +289,15 @@ namespace LeanplumSDK
                 Diffs = diffs;
                 ComputeMergedDictionary();
             }
-            if (variants != null)
-            {
-                Variants = variants;
-            }
 
             foreach (Var lpVariable in vars.Values)
             {
                 lpVariable.Update();
+            }
+
+            if (variants != null)
+            {
+                Variants = variants;
             }
 
             if (!IsSilent)
@@ -332,10 +333,13 @@ namespace LeanplumSDK
                 var getVariablesResponse = Util.GetLastResponse(varsUpdate) as IDictionary<string, object>;
                 var newVarValues = Util.GetValueOrDefault(getVariablesResponse, Constants.Keys.VARS) as IDictionary<string, object>;
                 var newVarFileAttributes = Util.GetValueOrDefault(getVariablesResponse, Constants.Keys.FILE_ATTRIBUTES) as IDictionary<string, object>;
-                var newVariants = Util.GetValueOrDefault(getVariablesResponse, Constants.Keys.VARIANTS) as List<object> ?? new List<object>();
-				
-                ApplyVariableDiffs(newVarValues, newVarFileAttributes, newVariants);
-
+                // If the user does not exist we might receive no variables.
+                // TODO: Equals() checks it by reference this will always return False. 
+                if (newVarValues != null && newVarFileAttributes != null &&
+                    (!newVarValues.Equals(VarCache.Diffs) || !newVarFileAttributes.Equals(VarCache.FileAttributes)))
+                {
+                    ApplyVariableDiffs(newVarValues, newVarFileAttributes, newVariants);
+                }
                 if (callback != null)
                 {
                     callback();

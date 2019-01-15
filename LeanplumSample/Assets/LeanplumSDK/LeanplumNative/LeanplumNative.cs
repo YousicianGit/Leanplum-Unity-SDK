@@ -396,6 +396,7 @@ namespace LeanplumSDK
             if (Constants.isNoop)
             {
                 _hasStarted = true;
+                calledStart = true;
                 startSuccessful = true;
                 OnVariablesChanged();
                 OnVariablesChangedAndNoDownloadsPending();
